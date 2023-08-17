@@ -1,0 +1,34 @@
+<eval> Element:
+
+This tag initiates a mathematical evaluation in Mathcad.
+It must contain a single child, <apply>.
+<apply> Element:
+
+Represents a specific mathematical operation.
+Can contain child tags <minus>, <mult>, <pow>, <parens>, <div>.
+
+Operation Elements (<minus>, <mult>, <pow>, <parens>, <div>):
+
+They encapsulate specific mathematical operations.
+All these operations can have children representing the operands.
+For nested operations, an <apply> child can be used.
+The order of operations follows the natural mathematical hierarchy:
+<parens> (Parentheses are evaluated first.)
+<pow> (Exponentiation)
+<mult> and <div> (Multiplication and Division)
+<minus> (Subtraction)
+In the context of MathCAD reading this XML, the deepest nested levels will be processed first.
+Other Elements:
+
+<id>: Represents a variable. Cannot be a direct child of <apply>.
+<real>: Represents a real number. Cannot be a direct child of <apply>.
+Attributes:
+
+Make sure to correctly assign attributes, especially ones like labels, xml:space, label-is-contextual, region-id, etc., based on their defined meanings and contexts.
+Element Order:
+
+The order in which elements appear matters, especially for operations. For example, in subtraction <minus>, the order of child elements defines the minuend and subtrahend.
+Avoid Redundant Nesting:
+
+Unnecessary nesting (like using <apply> without an actual operation) can cause confusion or errors. Ensure that only necessary elements are included.
+Remember, it's essential to adhere to these rules strictly. Even a minor discrepancy, like a missing tag or an attribute, can result in errors when the XML is parsed by Mathcad.
