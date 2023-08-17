@@ -26,7 +26,7 @@ import zipfile
 import shutil
 import os
 
-path_to_zip_file = "mcdx/complexAssignment.mcdx"
+path_to_zip_file = "mcdx/blank.mcdx"
 
 # path_to_zip_file = "TestStackedOperations.mcdx"
 # path_to_zip_file = "TestInsert.mcdx"

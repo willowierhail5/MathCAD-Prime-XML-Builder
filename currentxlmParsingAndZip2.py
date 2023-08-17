@@ -25,6 +25,8 @@
 # ◦stop—Stops the reading process.
 # •M is a matrix of scalars. If M contains units, functions, or embedded matrices, PTC Mathcad cannot write the file.
 # •rows or cols (optional) are either scalars specifying the first row or column of matrix M to write, or two-element vectors specifying the range of rows or columns (inclusive) of matrix M to write. If you omit this argument, WRITEEXCEL writes out every row and column of the matrix to the specified file.
+
+# Import necessary libraries for XML processing, algebraic parsing, etc.
 import zipfile
 import io
 from lxml import etree as ET
@@ -36,11 +38,13 @@ import sys
 import openpyxl
 import re
 
+# Define global constants and initial state.
 input_file_path = "mcdx/blank.mcdx"
 output_file_path = "mcdx/TestOutput.mcdx"
 
 state = {"region_id": 0, "top": 128}  # the initial value of 'top'
 
+# Define namespaces for various XML schemas used.
 d_ns = "http://schemas.mathsoft.com/worksheet50"
 ml_ns = "http://schemas.mathsoft.com/math50"
 ve_ns = "http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -54,11 +58,18 @@ r_s = "{http://schemas.mathsoft.com/worksheet50}regions"
 ap_s = "{" + ml_ns + "}apply"
 df_s = "{" + ml_ns + "}define"
 
+# Function to create an 'id' element in XML.
+# The 'id' element will contain the provided name and labels. The attribute "preserve" is optional and defaults to "preserve".
+
 
 def create_id(parent, name, labels, preserve="preserve"):
     id_attrs = {"labels": labels, id_s: preserve}
     id_element = create_element(parent, "{" + ml_ns + "}id", id_attrs, name)
     return id_element
+
+
+# Function to create an 'id' element in XML with contextual label attribute.
+# This element is used to label math elements contextually. For instance, a variable with a specific unit.
 
 
 def create_id_with_contextual_label(
@@ -72,9 +83,17 @@ def create_id_with_contextual_label(
     return create_element(parent, "{" + ml_ns + "}id", id_attrs, text)
 
 
+# Function to create an 'id' element in XML without any label.
+# This function generates a simple ID element with only the "preserve" attribute.
+
+
 def create_id_no_label(parent, text):
     id_attrs = {id_s: "preserve"}
     return create_element(parent, "{" + ml_ns + "}id", id_attrs, text)
+
+
+# Function to create a region element in XML.
+# This element describes a specific region in the worksheet layout (given by its width, height, top, and left coordinates).
 
 
 def create_region(region_id, width, height, top, left):
@@ -90,16 +109,28 @@ def create_region(region_id, width, height, top, left):
     )
 
 
+# Function to create a 'scale' element in XML under the provided parent element.
+
+
 def create_scale(parent):
     return create_element(parent, "{" + ml_ns + "}scale")
+
+
+# Function to create a 'math' element in XML under the provided parent element.
 
 
 def create_math(parent):
     return ET.SubElement(parent, "math")
 
 
+# Function to create an 'eval' element in XML under the provided parent element.
+
+
 def create_eval(parent):
     return ET.SubElement(parent, "{" + ml_ns + "}eval")
+
+
+# Generic function to create a new XML element with provided name, attributes, and text.
 
 
 def create_element(parent, name, attrs={}, text=None):
@@ -109,16 +140,28 @@ def create_element(parent, name, attrs={}, text=None):
     return element
 
 
+# Function to create a 'define' element in XML under the provided parent element.
+
+
 def create_def(parent):
     return create_element(parent, df_s)
+
+
+# Function to create a 'real' element in XML to represent a real number.
 
 
 def create_real(parent, value):
     return create_element(parent, "{" + ml_ns + "}real", {}, str(value))
 
 
+# Function to create a 'placeholder' element in XML under the provided parent element.
+
+
 def create_placeholder(parent):
     return create_element(parent, "{" + ml_ns + "}placeholder")
+
+
+# Function to create a 'string' element in XML with provided text and the "preserve" attribute.
 
 
 def create_string(parent, text, preserve="preserve"):
@@ -126,11 +169,17 @@ def create_string(parent, text, preserve="preserve"):
     return create_element(parent, "{" + ml_ns + "}str", str_attrs, text)
 
 
+# Function to parse an XML file and return its root element.
+
+
 def parse_xml(file):
     register_namespaces()
     parser = ET.XMLParser(remove_blank_text=True)
     tree = ET.parse(file, parser)
     return tree.getroot()
+
+
+# Function to register the necessary namespaces for XML parsing and generation.
 
 
 def register_namespaces():
@@ -146,6 +195,10 @@ def register_namespaces():
 
     for key, value in ns_dict.items():
         ET.register_namespace(key, value)
+
+
+# Function to create a matrix from a given matrix name and a matrix of values.
+# This function will generate an XML structure representing the matrix and will update the state's "region_id" and "top" values.
 
 
 def create_matrix_from_name_matrix(var_name, matrix):
@@ -173,9 +226,16 @@ def create_matrix_from_name_matrix(var_name, matrix):
     return region
 
 
+# Function to create a matrix element in XML with the provided number of rows and columns.
+
+
 def create_matrix(parent, rows, cols):
     matrix_attrs = {"rows": str(rows), "cols": str(cols)}
     return create_element(parent, "{" + ml_ns + "}matrix", matrix_attrs)
+
+
+# Function to create a variable in XML representation with its name, value, and unit.
+# This function also updates the state's "region_id" and "top" values.
 
 
 def create_variable(name, value, unit, top):
@@ -200,6 +260,10 @@ def create_variable(name, value, unit, top):
     state["top"] += 25.6
 
     return region
+
+
+# Function to create an operation in XML format.
+# This function generates the XML structure for mathematical operations on the worksheet.
 
 
 def create_operation(root, item):
@@ -304,8 +368,11 @@ def create_operation(root, item):
     return region
 
 
-# need to handle the var_name differently
-def create_write_excel(var_name, file_name, range, top):
+# Function to create an XML structure for writing data to an Excel file.
+# It constructs the "write" operation specifying the file name, variable name, and range.
+
+
+def create_write_excel(var_name, file_name, row_num, col_num, range, top, matrix):
     region_id = state["region_id"]
     top = top
 
@@ -313,21 +380,45 @@ def create_write_excel(var_name, file_name, range, top):
     math = create_math(region)
 
     define = create_def(math)
-    create_id(define, var_name + "write", "VARIABLE")
-    # bandaid fix
+    create_id(define, var_name, "VARIABLE")
+
     apply = create_element(define, "{" + ml_ns + "}apply")
     create_id(apply, "WRITEEXCEL", "FUNCTION")
 
     sequence = create_element(apply, "{" + ml_ns + "}sequence")
 
     create_string(sequence, file_name)
-    create_string(sequence, var_name)
+
+    # Create the contextual variable representation
+    create_contextual_variable(sequence, matrix)
+
+    create_real(sequence, row_num)
+    create_real(sequence, col_num)
+
     create_string(sequence, range)
 
     state["region_id"] += 1
     state["top"] += 25.6
 
     return region
+
+
+def create_contextual_variable(parent, var_name):
+    """Function to create the 'contextual variable' XML element."""
+    return create_element(
+        parent,
+        "{" + ml_ns + "}id",
+        {
+            "labels": "VARIABLE",
+            "label-is-contextual": "true",
+            "{http://www.w3.org/XML/1998/namespace}space": "preserve",
+        },
+        var_name,
+    )
+
+
+# Function to create an XML structure for reading data from an Excel file.
+# It constructs the "read" operation specifying the file name, variable name, and range.
 
 
 def create_read_excel(var_name, file_name, range, top):
@@ -354,6 +445,9 @@ def create_read_excel(var_name, file_name, range, top):
     return region
 
 
+# Function to append multiple "read" operations to the XML root element based on the given read_excel_data.
+
+
 def append_read_excels(root, read_excel_data):
     regions_tag = root.find(r_s)
     for item in read_excel_data:
@@ -366,16 +460,28 @@ def append_read_excels(root, read_excel_data):
         )
 
 
-def append_write_excels(root, read_excel_data):
+# Function to append multiple "write" operations to the XML root element based on the given read_excel_data.
+
+
+def append_write_excels(root, write_excel_data):
     regions_tag = root.find(r_s)
-    for item in read_excel_data:
+    for item in write_excel_data:
         if not item["var_name"] or not item["file_name"] or not item["range"]:
             continue
         regions_tag.append(
             create_write_excel(
-                item["var_name"], item["file_name"], item["range"], item["top"]
+                item["var_name"],
+                item["file_name"],
+                item["row_num"],
+                item["col_num"],
+                item["range"],
+                item["top"],
+                item["matrix"],
             )
         )
+
+
+# Function to append matrix definitions to the XML root element based on the given variable names and matrices.
 
 
 def append_matrices(root, var_names, matrices):
@@ -385,6 +491,9 @@ def append_matrices(root, var_names, matrices):
             continue  # skip this iteration if any value is empty or None
 
         regions_tag.append(create_matrix_from_name_matrix(name, matrix))
+
+
+# Function to append variable definitions to the XML root element based on the given data for defining variables.
 
 
 def append_variables(root, define_variables_data):
@@ -398,11 +507,18 @@ def append_variables(root, define_variables_data):
         )
 
 
+# Function to append operations to the XML root element based on the given operations_data.
+
+
 def append_operations(root, operations_data):
     regions = root.find(r_s)
     for item in operations_data:
         if item["expr"]:
             create_operation(regions, item)
+
+
+# Function to find the maximum region ID present in the XML root element.
+# This can be useful to avoid ID conflicts when adding new regions.
 
 
 def get_max_region_id_from_root(root):
@@ -413,10 +529,19 @@ def get_max_region_id_from_root(root):
     return max_region_id
 
 
+# Function to write the given data into a zip archive at the specified output path.
+
+
 def write_data_to_zip(output_file_path, data):
     with zipfile.ZipFile(output_file_path, "w") as zip_out:
         for name, content in data.items():
             zip_out.writestr(name, content)
+
+
+# Parsing Utilities
+
+# This function parses assignment strings and extracts variable details.
+# Given a string like "variable := 12.34 unit", it will extract the variable name, its assigned value, and its unit.
 
 
 def parse_assignment(data, top):
@@ -442,6 +567,9 @@ def parse_assignment(data, top):
         return {"var_name": var, "value": float(value), "unit": "", "top": top}
 
 
+# This function reads an Excel workbook to extract assignment and operation details.
+# It recognizes patterns like READ and WRITE Excel operations, as well as simple assignments.
+# Returns separate lists of data for different operations.
 def parse_excel_input(file_name):
     workbook = openpyxl.load_workbook(file_name)
     sheet = workbook.active
@@ -451,6 +579,7 @@ def parse_excel_input(file_name):
     write_excel_data = []  # Initialize this list to store WRITEEXCEL matches
 
     READEXCEL_PATTERN = r"([a-zA-Z0-9_]+):=READEXCEL\(\"(.*\.xlsx|.*\.xlsm|.*\.csv)\",\"([A-Z0-9:]+)\"\)"
+    WRITEEXCEL_PATTERN = r"([a-zA-Z0-9_]+):=WRITEEXCEL\(\"(.*\.xlsx|.*\.xlsm|.*\.csv)\",([a-zA-Z0-9_]+),(\d+),(\d+),\"([^\"]+)\"\)"
 
     define_variables_data = []
     for row in sheet.iter_rows(min_row=2, values_only=True):
@@ -467,25 +596,31 @@ def parse_excel_input(file_name):
 
             match_readexcel = re.match(READEXCEL_PATTERN, data)
             print("Match read? : " + str(match_readexcel))
-            if data.startswith("write:=WRITEEXCEL("):
-                params = data[len("write:=WRITEEXCEL(") : -1].split(",")
-
-                file_name = params[0].strip('"')
-                var_name = params[1]
-                row = int(params[2])
-                col = int(params[3])
-                data_range = params[4].strip('"')
-
+            match_writeexcel = re.match(WRITEEXCEL_PATTERN, data)
+            print("MATCH WRITE?: " + str(match_writeexcel))
+            if match_writeexcel:
+                print("DOING WRITE EXCEL LOGIC")
+                (
+                    var_name,
+                    file_name,
+                    matrix,
+                    row_num,
+                    col_num,
+                    data_range,
+                ) = match_writeexcel.groups()
                 write_excel_data.append(
                     {
                         "var_name": var_name,
                         "file_name": file_name,
-                        "row": int(row),
-                        "col": int(col),
-                        "range": data_range,
+                        "matrix": matrix,  # This is simplistic. The matrix variable will need further parsing.
+                        "row_num": row_num,
+                        "col_num": col_num,
+                        "range": data_range,  # This might also need further splitting
                         "top": top if top is not None else None,
                     }
                 )
+                print("END WRITE EXCEL LOGIC: " + str(write_excel_data))
+
             elif match_readexcel:
                 var_name, file_name, data_range = match_readexcel.groups()
                 read_excel_data.append(
@@ -512,12 +647,23 @@ def parse_excel_input(file_name):
             }
             operations_data.append(op_data)
     print("RETURNING DEFINE: " + str(define_variables_data))
+    print("END RETURNING DEFINE")
+
+    print("WRITING DATA: " + str(write_excel_data))
+    print("END WRITING DATA")
     return (
         define_variables_data,
         operations_data,
         read_excel_data,
         write_excel_data,  # return the write_excel_data as well
     )
+
+
+# ZIP File Handling
+
+# Given the paths of an input and output ZIP file, this function extracts XML content from the input,
+# modifies the XML based on provided operations and variables, and writes the modified XML to the output ZIP.
+# It appends data like variables, matrices, operations, and Excel-related functions to the XML.
 
 
 def read_and_modify_zip(
@@ -568,6 +714,13 @@ def read_and_modify_zip(
                     myzip_out.writestr(filename, myzip.read(filename))
 
 
+# Main Execution
+
+# This is the main driver function for the script.
+# It begins by reading and parsing an Excel workbook for operations and variable assignments.
+# Following that, it reads and modifies the content of a ZIP file based on the parsed data.
+
+
 def main():
     excel_path = "mcdx/excelInput.xlsm"
     (
@@ -589,6 +742,11 @@ def main():
         output_file_path,
         operations_data,
     )
+
+
+# Entry Point
+
+# If the script is executed as the main module, it calls the main function to start processing.
 
 
 if __name__ == "__main__":
