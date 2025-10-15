@@ -58,23 +58,43 @@ r_s = "{http://schemas.mathsoft.com/worksheet50}regions"
 ap_s = "{" + ml_ns + "}apply"
 df_s = "{" + ml_ns + "}define"
 
-# Function to create an 'id' element in XML.
-# The 'id' element will contain the provided name and labels. The attribute "preserve" is optional and defaults to "preserve".
-
 
 def create_id(parent, name, labels, preserve="preserve"):
+    """Function to create an 'id' element in XML.
+
+    The 'id' element will contain the provided name and labels. The attribute "preserve" is optional and defaults to "preserve".
+
+    Args:
+        parent (_type_): _description_
+        name (_type_): _description_
+        labels (_type_): _description_
+        preserve (str, optional): _description_. Defaults to "preserve".
+
+    Returns:
+        _type_: _description_
+    """
     id_attrs = {"labels": labels, id_s: preserve}
     id_element = create_element(parent, "{" + ml_ns + "}id", id_attrs, name)
     return id_element
 
 
-# Function to create an 'id' element in XML with contextual label attribute.
-# This element is used to label math elements contextually. For instance, a variable with a specific unit.
-
-
 def create_id_with_contextual_label(
     parent, text, labels, preserve="preserve", label_is_contextual="true"
 ):
+    """Function to create an 'id' element in XML with contextual label attribute.
+
+    This element is used to label math elements contextually. For instance, a variable with a specific unit.
+
+    Args:
+        parent (_type_): _description_
+        text (_type_): _description_
+        labels (_type_): _description_
+        preserve (str, optional): _description_. Defaults to "preserve".
+        label_is_contextual (str, optional): _description_. Defaults to "true".
+
+    Returns:
+        _type_: _description_
+    """
     id_attrs = {
         "labels": labels,
         id_s: preserve,
@@ -83,20 +103,35 @@ def create_id_with_contextual_label(
     return create_element(parent, "{" + ml_ns + "}id", id_attrs, text)
 
 
-# Function to create an 'id' element in XML without any label.
-# This function generates a simple ID element with only the "preserve" attribute.
-
-
 def create_id_no_label(parent, text):
+    """Function to create an 'id' element in XML without any label.
+
+    This function generates a simple ID element with only the "preserve" attribute.
+
+    Args:
+        parent (_type_): _description_
+        text (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     id_attrs = {id_s: "preserve"}
     return create_element(parent, "{" + ml_ns + "}id", id_attrs, text)
 
 
-# Function to create a region element in XML.
-# This element describes a specific region in the worksheet layout (given by its width, height, top, and left coordinates).
-
-
 def create_region(region_id, width, height, top, left):
+    """Function to create a region element in XML. This element describes a specific region in the worksheet layout (given by its width, height, top, and left coordinates).
+
+    Args:
+        region_id (_type_): _description_
+        width (_type_): _description_
+        height (_type_): _description_
+        top (_type_): _description_
+        left (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     return ET.Element(
         "region",
         {
@@ -109,80 +144,129 @@ def create_region(region_id, width, height, top, left):
     )
 
 
-# Function to create a 'scale' element in XML under the provided parent element.
-
-
 def create_scale(parent):
+    """Function to create a 'scale' element in XML under the provided parent element.
+
+    Args:
+        parent (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     return create_element(parent, "{" + ml_ns + "}scale")
 
 
-# Function to create a 'math' element in XML under the provided parent element.
-
-
 def create_math(parent):
+    """Function to create a 'math' element in XML under the provided parent element.
+
+    Args:
+        parent (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     return ET.SubElement(parent, "math")
 
 
-# Function to create an 'eval' element in XML under the provided parent element.
-
-
 def create_eval(parent):
+    """Function to create an 'eval' element in XML under the provided parent element.
+
+    Args:
+        parent (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     return ET.SubElement(parent, "{" + ml_ns + "}eval")
 
 
-# Generic function to create a new XML element with provided name, attributes, and text.
-
-
 def create_element(parent, name, attrs={}, text=None):
+    """Generic function to create a new XML element with provided name, attributes, and text.
+
+    Args:
+        parent (_type_): _description_
+        name (_type_): _description_
+        attrs (dict, optional): _description_. Defaults to {}.
+        text (_type_, optional): _description_. Defaults to None.
+
+    Returns:
+        _type_: _description_
+    """
     element = ET.SubElement(parent, name, attrs)
     if text:
         element.text = text
     return element
 
 
-# Function to create a 'define' element in XML under the provided parent element.
-
-
 def create_def(parent):
+    """Function to create a 'define' element in XML under the provided parent element.
+
+    Args:
+        parent (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     return create_element(parent, df_s)
 
 
-# Function to create a 'real' element in XML to represent a real number.
-
-
 def create_real(parent, value):
+    """Function to create a 'real' element in XML to represent a real number.
+
+    Args:
+        parent (_type_): _description_
+        value (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     return create_element(parent, "{" + ml_ns + "}real", {}, str(value))
 
 
-# Function to create a 'placeholder' element in XML under the provided parent element.
-
-
 def create_placeholder(parent):
+    """Function to create a 'placeholder' element in XML under the provided parent element.
+
+    Args:
+        parent (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     return create_element(parent, "{" + ml_ns + "}placeholder")
 
 
-# Function to create a 'string' element in XML with provided text and the "preserve" attribute.
-
-
 def create_string(parent, text, preserve="preserve"):
+    """Function to create a 'string' element in XML with provided text and the "preserve" attribute.
+
+    Args:
+        parent (_type_): _description_
+        text (_type_): _description_
+        preserve (str, optional): _description_. Defaults to "preserve".
+
+    Returns:
+        _type_: _description_
+    """
     str_attrs = {id_s: preserve}
     return create_element(parent, "{" + ml_ns + "}str", str_attrs, text)
 
 
-# Function to parse an XML file and return its root element.
-
-
 def parse_xml(file):
+    """Function to parse an XML file and return its root element.
+
+    Args:
+        file (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     register_namespaces()
     parser = ET.XMLParser(remove_blank_text=True)
     tree = ET.parse(file, parser)
     return tree.getroot()
 
 
-# Function to register the necessary namespaces for XML parsing and generation.
-
-
 def register_namespaces():
+    """Function to register the necessary namespaces for XML parsing and generation."""
     ns_dict = {
         "default": d_ns,
         "ml": ml_ns,
@@ -197,11 +281,16 @@ def register_namespaces():
         ET.register_namespace(key, value)
 
 
-# Function to create a matrix from a given matrix name and a matrix of values.
-# This function will generate an XML structure representing the matrix and will update the state's "region_id" and "top" values.
-
-
 def create_matrix_from_name_matrix(var_name, matrix):
+    """Function to create a matrix from a given matrix name and a matrix of values. This function will generate an XML structure representing the matrix and will update the state's "region_id" and "top" values.
+
+    Args:
+        var_name (_type_): _description_
+        matrix (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     region_id = state["region_id"]
     top = state["top"]
 
@@ -226,19 +315,33 @@ def create_matrix_from_name_matrix(var_name, matrix):
     return region
 
 
-# Function to create a matrix element in XML with the provided number of rows and columns.
-
-
 def create_matrix(parent, rows, cols):
+    """Function to create a matrix element in XML with the provided number of rows and columns.
+
+    Args:
+        parent (_type_): _description_
+        rows (_type_): _description_
+        cols (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     matrix_attrs = {"rows": str(rows), "cols": str(cols)}
     return create_element(parent, "{" + ml_ns + "}matrix", matrix_attrs)
 
 
-# Function to create a variable in XML representation with its name, value, and unit.
-# This function also updates the state's "region_id" and "top" values.
-
-
 def create_variable(name, value, unit, top):
+    """Function to create a variable in XML representation with its name, value, and unit. This function also updates the state's "region_id" and "top" values.
+
+    Args:
+        name (_type_): _description_
+        value (_type_): _description_
+        unit (_type_): _description_
+        top (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     region_id = state["region_id"]
     top = top
 
@@ -262,11 +365,16 @@ def create_variable(name, value, unit, top):
     return region
 
 
-# Function to create an operation in XML format.
-# This function generates the XML structure for mathematical operations on the worksheet.
-
-
 def create_operation(root, item):
+    """Function to create an operation in XML format. This function generates the XML structure for mathematical operations on the worksheet.
+
+    Args:
+        root (_type_): _description_
+        item (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     region_id = state["region_id"]
     top = item["top"]
     region = create_region(region_id, "216.4", "25.6", top, "172.8")
@@ -368,11 +476,21 @@ def create_operation(root, item):
     return region
 
 
-# Function to create an XML structure for writing data to an Excel file.
-# It constructs the "write" operation specifying the file name, variable name, and range.
-
-
 def create_write_excel(var_name, file_name, row_num, col_num, range, top, matrix):
+    """Function to create an XML structure for writing data to an Excel file. It constructs the "write" operation specifying the file name, variable name, and range.
+
+    Args:
+        var_name (_type_): _description_
+        file_name (_type_): _description_
+        row_num (_type_): _description_
+        col_num (_type_): _description_
+        range (_type_): _description_
+        top (_type_): _description_
+        matrix (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     region_id = state["region_id"]
     top = top
 
@@ -404,7 +522,15 @@ def create_write_excel(var_name, file_name, row_num, col_num, range, top, matrix
 
 
 def create_contextual_variable(parent, var_name):
-    """Function to create the 'contextual variable' XML element."""
+    """Function to create the 'contextual variable' XML element.
+
+    Args:
+        parent (_type_): _description_
+        var_name (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     return create_element(
         parent,
         "{" + ml_ns + "}id",
@@ -417,11 +543,18 @@ def create_contextual_variable(parent, var_name):
     )
 
 
-# Function to create an XML structure for reading data from an Excel file.
-# It constructs the "read" operation specifying the file name, variable name, and range.
-
-
 def create_read_excel(var_name, file_name, range, top):
+    """Function to create an XML structure for reading data from an Excel file. It constructs the "read" operation specifying the file name, variable name, and range.
+
+    Args:
+        var_name (_type_): _description_
+        file_name (_type_): _description_
+        range (_type_): _description_
+        top (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     region_id = state["region_id"]
     top = top
 
@@ -445,10 +578,13 @@ def create_read_excel(var_name, file_name, range, top):
     return region
 
 
-# Function to append multiple "read" operations to the XML root element based on the given read_excel_data.
-
-
 def append_read_excels(root, read_excel_data):
+    """Function to append multiple "read" operations to the XML root element based on the given read_excel_data.
+
+    Args:
+        root (_type_): _description_
+        read_excel_data (_type_): _description_
+    """
     regions_tag = root.find(r_s)
     for item in read_excel_data:
         if not item["var_name"] or not item["file_name"] or not item["range"]:
@@ -464,6 +600,12 @@ def append_read_excels(root, read_excel_data):
 
 
 def append_write_excels(root, write_excel_data):
+    """Function to append multiple "write" operations to the XML root element based on the given read_excel_data.
+
+    Args:
+        root (_type_): _description_
+        write_excel_data (_type_): _description_
+    """
     regions_tag = root.find(r_s)
     for item in write_excel_data:
         if not item["var_name"] or not item["file_name"] or not item["range"]:
@@ -481,10 +623,14 @@ def append_write_excels(root, write_excel_data):
         )
 
 
-# Function to append matrix definitions to the XML root element based on the given variable names and matrices.
-
-
 def append_matrices(root, var_names, matrices):
+    """Function to append matrix definitions to the XML root element based on the given variable names and matrices.
+
+    Args:
+        root (_type_): _description_
+        var_names (_type_): _description_
+        matrices (_type_): _description_
+    """
     regions_tag = root.find("ws:regions", namespaces=root.nsmap)
     for name, matrix in zip(var_names, matrices):
         if not name or not matrix:
@@ -493,10 +639,13 @@ def append_matrices(root, var_names, matrices):
         regions_tag.append(create_matrix_from_name_matrix(name, matrix))
 
 
-# Function to append variable definitions to the XML root element based on the given data for defining variables.
-
-
 def append_variables(root, define_variables_data):
+    """Function to append variable definitions to the XML root element based on the given data for defining variables.
+
+    Args:
+        root (_type_): _description_
+        define_variables_data (_type_): _description_
+    """
     regions_tag = root.find("ws:regions", namespaces=root.nsmap)
     for item in define_variables_data:
         if not item["var_name"] or not item["value"] or not item["unit"]:
@@ -507,21 +656,28 @@ def append_variables(root, define_variables_data):
         )
 
 
-# Function to append operations to the XML root element based on the given operations_data.
-
-
 def append_operations(root, operations_data):
+    """Function to append operations to the XML root element based on the given operations_data.
+
+    Args:
+        root (_type_): _description_
+        operations_data (_type_): _description_
+    """
     regions = root.find(r_s)
     for item in operations_data:
         if item["expr"]:
             create_operation(regions, item)
 
 
-# Function to find the maximum region ID present in the XML root element.
-# This can be useful to avoid ID conflicts when adding new regions.
-
-
 def get_max_region_id_from_root(root):
+    """Function to find the maximum region ID present in the XML root element. This can be useful to avoid ID conflicts when adding new regions.
+
+    Args:
+        root (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     max_region_id = max(
         int(region.get("region-id"))
         for region in root.findall(".//{http://schemas.mathsoft.com/worksheet50}region")
@@ -533,21 +689,28 @@ def get_max_region_id_from_root(root):
 
 
 def write_data_to_zip(output_file_path, data):
+    """Function to write the given data into a zip archive at the specified output path.
+
+    Args:
+        output_file_path (_type_): _description_
+        data (_type_): _description_
+    """
     with zipfile.ZipFile(output_file_path, "w") as zip_out:
         for name, content in data.items():
             zip_out.writestr(name, content)
 
 
-# Parsing Utilities
-
-# This function parses assignment strings and extracts variable details.
-# Given a string like "variable := 12.34 unit", it will extract the variable name, its assigned value, and its unit.
-
-
 def parse_assignment(data, top):
-    """
-    Parse an assignment string like "variable := 12.34 unit"
-    Returns the variable name, value, and unit as a dictionary.
+    """Parsing Utilities
+
+    This function parses assignment strings and extracts variable details. Given a string like "variable := 12.34 unit", it will extract the variable name, its assigned value, and its unit.
+
+    Args:
+        data (_type_): _description_
+        top (_type_): _description_
+
+    Returns:
+        _type_: _description_
     """
     # Split data into variable and value
     var, value = data.split(":=")
@@ -567,10 +730,15 @@ def parse_assignment(data, top):
         return {"var_name": var, "value": float(value), "unit": "", "top": top}
 
 
-# This function reads an Excel workbook to extract assignment and operation details.
-# It recognizes patterns like READ and WRITE Excel operations, as well as simple assignments.
-# Returns separate lists of data for different operations.
 def parse_excel_input(file_name):
+    """This function reads an Excel workbook to extract assignment and operation details. It recognizes patterns like READ and WRITE Excel operations, as well as simple assignments. Returns separate lists of data for different operations.
+
+    Args:
+        file_name (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     workbook = openpyxl.load_workbook(file_name)
     sheet = workbook.active
 
@@ -659,13 +827,6 @@ def parse_excel_input(file_name):
     )
 
 
-# ZIP File Handling
-
-# Given the paths of an input and output ZIP file, this function extracts XML content from the input,
-# modifies the XML based on provided operations and variables, and writes the modified XML to the output ZIP.
-# It appends data like variables, matrices, operations, and Excel-related functions to the XML.
-
-
 def read_and_modify_zip(
     input_file_path,
     define_variables_data,
@@ -676,6 +837,20 @@ def read_and_modify_zip(
     output_file_path,
     operations_data,
 ):
+    """ZIP File Handling
+
+    Given the paths of an input and output ZIP file, this function extracts XML content from the input, modifies the XML based on provided operations and variables, and writes the modified XML to the output ZIP. It appends data like variables, matrices, operations, and Excel-related functions to the XML.
+
+    Args:
+        input_file_path (_type_): _description_
+        define_variables_data (_type_): _description_
+        matrix_names (_type_): _description_
+        matrices (_type_): _description_
+        read_excel_data (_type_): _description_
+        write_excel_data (_type_): _description_
+        output_file_path (_type_): _description_
+        operations_data (_type_): _description_
+    """
     with zipfile.ZipFile(input_file_path, "r") as myzip:
         with zipfile.ZipFile(
             output_file_path, "w"
@@ -714,14 +889,11 @@ def read_and_modify_zip(
                     myzip_out.writestr(filename, myzip.read(filename))
 
 
-# Main Execution
-
-# This is the main driver function for the script.
-# It begins by reading and parsing an Excel workbook for operations and variable assignments.
-# Following that, it reads and modifies the content of a ZIP file based on the parsed data.
-
-
 def main():
+    """Main Execution
+
+    This is the main driver function for the script. It begins by reading and parsing an Excel workbook for operations and variable assignments. Following that, it reads and modifies the content of a ZIP file based on the parsed data.
+    """
     excel_path = "mcdx/excelInput.xlsm"
     (
         define_variables_data,
@@ -750,6 +922,7 @@ def main():
 
 
 if __name__ == "__main__":
+    # include some logic for debugging when this is the main file. When in production, this will be imported as a module and main will be called directly.
     main()
 
 # Note. Exponents are **. Not ^.
