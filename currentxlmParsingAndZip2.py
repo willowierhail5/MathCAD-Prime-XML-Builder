@@ -39,8 +39,11 @@ import openpyxl
 import re
 
 # Define global constants and initial state.
-input_file_path = "mcdx/blank.mcdx"
-output_file_path = "mcdx/TestOutput.mcdx"
+input_file_path = "mcdx/blank.mcdx"  # a blank mathcad file to edit. Needs to exist before script is ran
+output_file_path = "mcdx/TestOutput.mcdx"  # output file path. Does not need to exist before script is ran
+
+# TODO: organize functions into classes (like a class for reading in data so I can change the source later, a class for parsing xml, a class for writing xml, etc.)
+# TODO: will help to really understand order of operations, try to reorganize the functions so that they are in order of execution (roughly)
 
 state = {"region_id": 0, "top": 128}  # the initial value of 'top'
 
@@ -734,7 +737,7 @@ def parse_excel_input(file_name):
     """This function reads an Excel workbook to extract assignment and operation details. It recognizes patterns like READ and WRITE Excel operations, as well as simple assignments. Returns separate lists of data for different operations.
 
     Args:
-        file_name (_type_): _description_
+        file_name (_type_): path to the Excel file
 
     Returns:
         _type_: _description_
@@ -751,10 +754,13 @@ def parse_excel_input(file_name):
 
     define_variables_data = []
     for row in sheet.iter_rows(min_row=2, values_only=True):
+        # skipping any blank data rows
         if not row[1]:
             continue
         data = row[1]
+        # replacing any blank space (TODO: .strip maybe instead?)
         data = data.replace(" ", "")
+        # storing vertical location of element
         top = float(row[2])
         if data is None:
             break
@@ -855,10 +861,11 @@ def read_and_modify_zip(
         with zipfile.ZipFile(
             output_file_path, "w"
         ) as myzip_out:  # open output zip file
-            for filename in myzip.namelist():
-                if filename == "mathcad/result.xml":
+            for filename in myzip.namelist():  # looping through xml files in zip
+                if filename == "mathcad/result.xml":  # skipping result.xml file
                     continue
-                elif filename == "mathcad/worksheet.xml":
+                elif filename == "mathcad/worksheet.xml":  # the file to write to
+                    # TODO: organize this printed output better
                     print(
                         input_file_path,
                         define_variables_data,
