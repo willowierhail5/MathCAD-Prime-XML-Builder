@@ -49,7 +49,7 @@ state = {"region_id": 0, "top": 128}  # the initial value of 'top'
 
 # Define namespaces for various XML schemas used.
 d_ns = "http://schemas.mathsoft.com/worksheet50"
-ml_ns = "http://schemas.mathsoft.com/math50"
+ml_ns = "http://schemas.mathsoft.com/math50"  # uses mathml namespace with a twist. It is similar to RPN in the background, (* 4 (*3 2)) to do 4 * (3 * 2)
 ve_ns = "http://schemas.openxmlformats.org/markup-compatibility/2006"
 r_ns = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
 ws_ns = d_ns
