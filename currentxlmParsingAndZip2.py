@@ -40,7 +40,7 @@ import re
 
 # Define global constants and initial state.
 input_file_path = "mcdx/blank.mcdx"  # a blank mathcad file to edit. Needs to exist before script is ran
-output_file_path = "mcdx/TestOutput.mcdx"  # output file path. Does not need to exist before script is ran
+output_file_path = "mcdx/TestOutput2.mcdx"  # output file path. Does not need to exist before script is ran
 
 # TODO: organize functions into classes (like a class for reading in data so I can change the source later, a class for parsing xml, a class for writing xml, etc.)
 # TODO: will help to really understand order of operations, try to reorganize the functions so that they are in order of execution (roughly)
@@ -753,6 +753,7 @@ def parse_excel_input(file_name):
     WRITEEXCEL_PATTERN = r"([a-zA-Z0-9_]+):=WRITEEXCEL\(\"(.*\.xlsx|.*\.xlsm|.*\.csv)\",([a-zA-Z0-9_]+),(\d+),(\d+),\"([^\"]+)\"\)"
 
     define_variables_data = []
+    # TODO: add support for variable expressions. Currently only supports direct assignments like var:=1 or expressions in operations like var1+var2=. Eventually would like var:=var1+var2= to work as wel
     for row in sheet.iter_rows(min_row=2, values_only=True):
         # skipping any blank data rows
         if not row[1]:
@@ -901,15 +902,17 @@ def main():
 
     This is the main driver function for the script. It begins by reading and parsing an Excel workbook for operations and variable assignments. Following that, it reads and modifies the content of a ZIP file based on the parsed data.
     """
-    excel_path = "mcdx/excelInput.xlsm"
+    excel_path = "mcdx/excelInput copy.xlsm"
     (
         define_variables_data,
         operations_data,
         read_excel_data,
         write_excel_data,
     ) = parse_excel_input(excel_path)
-    matrix_names = ["mat1", "mat2"]
-    matrices = [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]
+    # matrix_names = ["mat1", "mat2"]
+    # matrices = [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]
+    matrix_names = []
+    matrices = []
 
     read_and_modify_zip(
         input_file_path,
