@@ -45,6 +45,8 @@ output_file_path = "mcdx/TestOutput2.mcdx"  # output file path. Does not need to
 # TODO: organize functions into classes (like a class for reading in data so I can change the source later, a class for parsing xml, a class for writing xml, etc.)
 # TODO: will help to really understand order of operations, try to reorganize the functions so that they are in order of execution (roughly)
 
+# TODO: currently, top is read in from spreadsheet and left is not used. I probably want to just dynamically change top based on some testing. Set left to some fixed number so that they are all aligned. Also need to look into figuring out how to assign a unit to a calculated equation. Currently, a placeholder is used - can I just replace that with a unit item, or is it some custom thing?
+
 state = {"region_id": 0, "top": 128}  # the initial value of 'top'
 
 # Define namespaces for various XML schemas used.
