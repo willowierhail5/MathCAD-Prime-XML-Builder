@@ -1,0 +1,167 @@
+<worksheet msg-id="NoMessage"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ve="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+    xmlns:ws="http://schemas.mathsoft.com/worksheet50"
+    xmlns:ml="http://schemas.mathsoft.com/math50"
+    xmlns:u="http://schemas.mathsoft.com/units10"
+    xmlns:p="http://schemas.mathsoft.com/provenance10"
+    xmlns="http://schemas.mathsoft.com/worksheet50">
+    <regions>
+        <region region-id="0" actualWidth="151.65333333333334" actualHeight="49.22" top="57.600000000000009" left="172.8">
+            <math resultRef="0">
+                <ml:define>
+                    <ml:id labels="VARIABLE" xml:space="preserve">testvar1</ml:id>
+                    <ml:apply>
+                        <ml:mult />
+                        <ml:real>1234</ml:real>
+                        <ml:apply>
+                            <ml:div />
+                            <ml:real>12</ml:real>
+                            <ml:apply>
+                                <ml:pow />
+                                <ml:real>23</ml:real>
+                                <ml:real>2</ml:real>
+                            </ml:apply>
+                        </ml:apply>
+                    </ml:apply>
+                </ml:define>
+            </math>
+        </region>
+        <region region-id="1" actualWidth="133.22333333333336" actualHeight="25.6" top="96.000000000000014" left="172.8">
+            <math resultRef="1">
+                <ml:eval>
+                    <ml:id labels="VARIABLE" label-is-contextual="true" xml:space="preserve">testvar1</ml:id>
+                    <ml:unitOverride>
+                        <ml:placeholder />
+                    </ml:unitOverride>
+                </ml:eval>
+            </math>
+        </region>
+        <region region-id="2" actualWidth="162.99666666666667" actualHeight="25.6" top="153.60000000000002" left="134.40000000000003">
+            <math resultRef="2">
+                <ml:define>
+                    <ml:id labels="VARIABLE" xml:space="preserve">testvar2</ml:id>
+                    <ml:apply>
+                        <ml:mult />
+                        <ml:id labels="VARIABLE" label-is-contextual="true" xml:space="preserve">testvar1</ml:id>
+                        <ml:real>23</ml:real>
+                    </ml:apply>
+                </ml:define>
+            </math>
+        </region>
+        <region region-id="3" actualWidth="141.20333333333335" actualHeight="25.6" top="172.8" left="134.40000000000003">
+            <math resultRef="3">
+                <ml:eval>
+                    <ml:id labels="VARIABLE" label-is-contextual="true" xml:space="preserve">testvar2</ml:id>
+                    <ml:unitOverride>
+                        <ml:placeholder />
+                    </ml:unitOverride>
+                </ml:eval>
+            </math>
+        </region>
+        <region region-id="4" actualWidth="222.40666666666667" actualHeight="49.352000000000004" top="192.00000000000003" left="134.40000000000003">
+            <math resultRef="4">
+                <ml:define>
+                    <ml:id labels="VARIABLE" xml:space="preserve">testvar3</ml:id>
+                    <ml:apply>
+                        <ml:mult />
+                        <ml:id labels="VARIABLE" label-is-contextual="true" xml:space="preserve">testvar2</ml:id>
+                        <ml:apply>
+                            <ml:div />
+                            <ml:id labels="VARIABLE" label-is-contextual="true" xml:space="preserve">testvar1</ml:id>
+                            <ml:apply>
+                                <ml:pow />
+                                <ml:id labels="VARIABLE" label-is-contextual="true" xml:space="preserve">testvar1</ml:id>
+                                <ml:real>1.5</ml:real>
+                            </ml:apply>
+                        </ml:apply>
+                    </ml:apply>
+                </ml:define>
+            </math>
+        </region>
+        <region region-id="5" actualWidth="141.20333333333335" actualHeight="25.6" top="230.40000000000003" left="134.40000000000003">
+            <math resultRef="5">
+                <ml:eval>
+                    <ml:id labels="VARIABLE" label-is-contextual="true" xml:space="preserve">testvar3</ml:id>
+                    <ml:unitOverride>
+                        <ml:placeholder />
+                    </ml:unitOverride>
+                </ml:eval>
+            </math>
+        </region>
+        <region region-id="6" actualWidth="277.63333333333333" actualHeight="49.352000000000004" top="268.80000000000007" left="134.40000000000003">
+            <math resultRef="6">
+                <ml:define>
+                    <ml:id labels="VARIABLE" xml:space="preserve">testvar4</ml:id>
+                    <ml:eval>
+                        <ml:apply>
+                            <ml:mult />
+                            <ml:id labels="VARIABLE" label-is-contextual="true" xml:space="preserve">testvar2</ml:id>
+                            <ml:apply>
+                                <ml:div />
+                                <ml:id labels="VARIABLE" label-is-contextual="true" xml:space="preserve">testvar1</ml:id>
+                                <ml:apply>
+                                    <ml:pow />
+                                    <ml:id labels="VARIABLE" label-is-contextual="true" xml:space="preserve">testvar3</ml:id>
+                                    <ml:real>2</ml:real>
+                                </ml:apply>
+                            </ml:apply>
+                        </ml:apply>
+                        <ml:unitOverride>
+                            <ml:placeholder />
+                        </ml:unitOverride>
+                    </ml:eval>
+                </ml:define>
+                <resultFormat>
+                    <matrix size="12,12" offset="0,0" show-indices="false" expand-nested-arrays="false" />
+                </resultFormat>
+            </math>
+        </region>
+        <region region-id="7" actualWidth="61.276666666666671" actualHeight="25.6" top="326.40000000000003" left="134.40000000000003">
+            <math resultRef="7">
+                <ml:define>
+                    <ml:id labels="VARIABLE" xml:space="preserve">a</ml:id>
+                    <ml:apply>
+                        <ml:scale />
+                        <ml:real>5</ml:real>
+                        <ml:id labels="UNIT" label-is-contextual="true" xml:space="preserve">in</ml:id>
+                    </ml:apply>
+                </ml:define>
+            </math>
+        </region>
+        <region region-id="8" actualWidth="60.513333333333335" actualHeight="25.6" top="345.6" left="134.40000000000003">
+            <math resultRef="8">
+                <ml:define>
+                    <ml:id labels="VARIABLE" xml:space="preserve">b</ml:id>
+                    <ml:apply>
+                        <ml:scale />
+                        <ml:real>6</ml:real>
+                        <ml:id labels="UNIT" label-is-contextual="true" xml:space="preserve">in</ml:id>
+                    </ml:apply>
+                </ml:define>
+            </math>
+        </region>
+        <region region-id="9" actualWidth="134.69333333333333" actualHeight="27.752000000000002" top="384.00000000000006" left="134.40000000000003">
+            <math resultRef="9">
+                <ml:define>
+                    <ml:id labels="VARIABLE" xml:space="preserve">c</ml:id>
+                    <ml:eval>
+                        <ml:apply>
+                            <ml:mult />
+                            <ml:id labels="VARIABLE" label-is-contextual="true" xml:space="preserve">a</ml:id>
+                            <ml:id labels="VARIABLE" label-is-contextual="true" xml:space="preserve">b</ml:id>
+                        </ml:apply>
+                        <ml:unitOverride>
+                            <ml:apply>
+                                <ml:pow />
+                                <ml:id labels="UNIT" xml:space="preserve">ft</ml:id>
+                                <ml:real>2</ml:real>
+                            </ml:apply>
+                        </ml:unitOverride>
+                    </ml:eval>
+                </ml:define>
+            </math>
+        </region>
+    </regions>
+</worksheet>

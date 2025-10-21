@@ -384,7 +384,13 @@ def create_operation(root, item):
     top = item["top"]
     region = create_region(region_id, "216.4", "25.6", top, "172.8")
     math = create_math(region)
-    eval = create_eval(math)
+    # eval = create_eval(math) #below allows us to define variable with an expression if var_name exists in the definition
+    if item.get("var_name"):
+        define_node = create_def(math)
+        create_id(define_node, item["var_name"], "VARIABLE")
+        parent_node = create_eval(define_node)
+    else:
+        parent_node = create_eval(math)
 
     def create_var_node(var_name):
         var_node = ET.Element("{" + ml_ns + "}id")
@@ -468,12 +474,14 @@ def create_operation(root, item):
         apply_node.append(process_expression(expr.args[1]))
         return apply_node
 
-    eval.append(process_expression(item["expr"]))
+    # eval.append(process_expression(item["expr"]))
+    parent_node.append(process_expression(item["expr"]))
 
     unitOverride = ET.Element("{" + ml_ns + "}unitOverride")
-    eval.append(unitOverride)
+    # eval.append(unitOverride)
     placeholder = ET.Element("{" + ml_ns + "}placeholder")
     unitOverride.append(placeholder)
+    parent_node.append(unitOverride)
 
     state["region_id"] += 1
     state["top"] += 25.6
@@ -755,7 +763,6 @@ def parse_excel_input(file_name):
     WRITEEXCEL_PATTERN = r"([a-zA-Z0-9_]+):=WRITEEXCEL\(\"(.*\.xlsx|.*\.xlsm|.*\.csv)\",([a-zA-Z0-9_]+),(\d+),(\d+),\"([^\"]+)\"\)"
 
     define_variables_data = []
-    # TODO: add support for variable expressions. Currently only supports direct assignments like var:=1 or expressions in operations like var1+var2=. Eventually would like var:=var1+var2= to work as wel
     for row in sheet.iter_rows(min_row=2, values_only=True):
         # skipping any blank data rows
         if not row[1]:
@@ -808,26 +815,52 @@ def parse_excel_input(file_name):
                         "top": top if top is not None else None,
                     }
                 )
-            else:
-                variable_data = parse_assignment(data, top)
+            else:  # checking whether a basic variable assignment or defining variable with an expression
+                # Split left/right side of assignment
+                var, rhs = data.split(":=")
+                var = var.strip()
+                rhs = rhs.strip()
 
-                print("VARIABLE DATA: " + str(variable_data))
-                define_variables_data.append(variable_data)
-                print("DEFINE VARIABLES DATA: " + str(define_variables_data))
-        else:
-            op_data = {
-                "expr": parse_expr(
-                    data.strip().replace("=", ""),
-                    evaluate=False,
-                ),
-                "top": top,
-            }
-            operations_data.append(op_data)
+                # Check if RHS is a simple numeric assignment or an expression
+                if re.match(r"^[0-9.]+([a-zA-Z]*)$", rhs):
+                    # Simple numeric value (possibly with unit)
+                    variable_data = parse_assignment(data, top)
+                    define_variables_data.append(variable_data)
+                else:
+                    # Expression-based variable definition
+                    try:
+                        expr = parse_expr(
+                            rhs, evaluate=False
+                        )  #! NOTE: this code uses sympy parser as the background format. May want to stick with this moving forward, but need to look into making sure that it can handle unicode characters when written into xml somehow... Can we export sympy expressions to latex somehow to get the special characters? and then unicode from latex?
+                        variable_data = {"var_name": var, "expr": expr, "top": top}
+                        operations_data.append(variable_data)
+                    except Exception as e:
+                        print(f"Error parsing expression for {var}: {rhs} -> {e}")
+                        ###############
+        else:  # standalone expression  # TODO: figure out how to add units to the operation
+            try:
+                op_data = {
+                    "expr": parse_expr(
+                        data.strip().replace("=", ""),
+                        evaluate=False,
+                    ),
+                    "top": top,
+                }
+                operations_data.append(op_data)
+            except Exception as e:
+                print(f"Error parsing expression: {data} -> {e}")
+
     print("RETURNING DEFINE: " + str(define_variables_data))
     print("END RETURNING DEFINE")
 
     print("WRITING DATA: " + str(write_excel_data))
     print("END WRITING DATA")
+
+    print("READING DATA: " + str(read_excel_data))
+    print("END READING DATA")
+
+    print("EXPRESSIONS: " + str(operations_data))
+    print("END EXPRESSIONS")
     return (
         define_variables_data,
         operations_data,
@@ -868,7 +901,7 @@ def read_and_modify_zip(
                 if filename == "mathcad/result.xml":  # skipping result.xml file
                     continue
                 elif filename == "mathcad/worksheet.xml":  # the file to write to
-                    # TODO: organize this printed output better
+                    # TODO: organize this printed output better/set up proper logging that can be toggled on/off whether debugging or not (if debugging, log to console, if not, log to file with timestamps, etc.)
                     print(
                         input_file_path,
                         define_variables_data,

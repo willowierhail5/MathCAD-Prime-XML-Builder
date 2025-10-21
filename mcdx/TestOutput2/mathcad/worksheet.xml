@@ -1,0 +1,94 @@
+<worksheet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ve="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+    xmlns:ws="http://schemas.mathsoft.com/worksheet50"
+    xmlns:ml="http://schemas.mathsoft.com/math50"
+    xmlns:u="http://schemas.mathsoft.com/units10"
+    xmlns:p="http://schemas.mathsoft.com/provenance10"
+    xmlns="http://schemas.mathsoft.com/worksheet50">
+    <regions>
+        <region region-id="0" actualWidth="56.223333333333343" actualHeight="25.6" top="172.8" left="268.80000000000007">
+            <math resultRef="0">
+                <ml:define>
+                    <ml:id labels="VARIABLE" xml:space="preserve">var</ml:id>
+                    <ml:real>1</ml:real>
+                </ml:define>
+            </math>
+        </region>
+        <region region-id="1" actualWidth="134.5" actualHeight="25.6" top="150.0" left="134.4">
+            <math>
+                <ml:define>
+                    <ml:id labels="VARIABLE" xml:space="preserve">&#945;</ml:id>
+                    <ml:apply>
+                        <ml:scale/>
+                        <ml:real>2.0</ml:real>
+                        <ml:id labels="UNIT" xml:space="preserve" label-is-contextual="true">in</ml:id>
+                    </ml:apply>
+                </ml:define>
+            </math>
+        </region>
+        <region region-id="2" actualWidth="216.4" actualHeight="25.6" top="200.0" left="172.8">
+            <math>
+                <ml:define>
+                    <ml:id labels="VARIABLE" xml:space="preserve">b</ml:id>
+                    <ml:eval>
+                        <ml:apply>
+                            <ml:plus/>
+                            <ml:real>-2</ml:real>
+                            <ml:apply>
+                                <ml:div/>
+                                <ml:apply>
+                                    <ml:mult/>
+                                    <ml:real>3</ml:real>
+                                    <ml:apply>
+                                        <ml:plus/>
+                                        <ml:real>6</ml:real>
+                                        <ml:real>7</ml:real>
+                                    </ml:apply>
+                                </ml:apply>
+                                <ml:apply>
+                                    <ml:mult/>
+                                    <ml:real>5</ml:real>
+                                    <ml:real>2</ml:real>
+                                </ml:apply>
+                            </ml:apply>
+                        </ml:apply>
+                        <ml:unitOverride>
+                            <ml:placeholder/>
+                        </ml:unitOverride>
+                    </ml:eval>
+                </ml:define>
+            </math>
+        </region>
+        <region region-id="3" actualWidth="216.4" actualHeight="25.6" top="250.0" left="172.8">
+            <math>
+                <ml:eval>
+                    <ml:apply>
+                        <ml:plus/>
+                        <ml:real>-2</ml:real>
+                        <ml:apply>
+                            <ml:div/>
+                            <ml:apply>
+                                <ml:mult/>
+                                <ml:real>3</ml:real>
+                                <ml:apply>
+                                    <ml:plus/>
+                                    <ml:real>6</ml:real>
+                                    <ml:real>7</ml:real>
+                                </ml:apply>
+                            </ml:apply>
+                            <ml:apply>
+                                <ml:mult/>
+                                <ml:real>5</ml:real>
+                                <ml:real>2</ml:real>
+                            </ml:apply>
+                        </ml:apply>
+                    </ml:apply>
+                    <ml:unitOverride>
+                        <ml:placeholder/>
+                    </ml:unitOverride>
+                </ml:eval>
+            </math>
+        </region>
+    </regions>
+</worksheet>
