@@ -175,5 +175,17 @@
                 </ml:define>
             </math>
         </region>
+        <region region-id="11" actualWidth="63.570000000000007" actualHeight="27.791200000000003" top="480.00000000000006" left="134.40000000000003">
+            <math resultRef="11">
+                <ml:define>
+                    <ml:id labels="VARIABLE" xml:space="preserve">
+                        <Span xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                            xmlns:pw="clr-namespace:Ptc.Wpf;assembly=Ptc.Core">b<pw:Subscript>test2</pw:Subscript>
+                        </Span>
+                    </ml:id>
+                    <ml:real>6</ml:real>
+                </ml:define>
+            </math>
+        </region>
     </regions>
 </worksheet>

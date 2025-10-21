@@ -1,15 +1,4 @@
-# We are not going to mess with flow documents
-# implement "top" like on excel for all methods
-# define requires units to function currently
-# I can add operation var12 and it functions as add eval. no longer need add eval.
-# add write excel functionality
-# does not support complex assignment. like "var1:=excelVar1*force". Should not be too hard to do
-# "  File "c:\Users\rcarlson\Desktop\Programs\ChimneyProgramFULLReferences\RCPython\currentxlmParsingAndZip2.py", line 400, in parse_excel_input
-#     top = float(row[2])
-#           ^^^^^^^^^^^^^
-# ValueError: could not convert string to float: '=C2+1000'"
-# sheet!page number can we do that in readexcel
-
+#! notes left behind by original creator. I am not planning on really using write/read excel at this point so I will leave these here for reference:
 
 # Arguments WRITEEXCEL("file", M, [rows, [cols]], [“range”])—Writes matrix M to the defined range within the Excel file you specified.
 # rows or cols (optional) are either scalars specifying the first row or column of matrix M to write, or two-element vectors specifying the range of rows or columns (inclusive) of matrix M to write. If you omit this argument, WRITEEXCEL writes out every row and column of the matrix to the specified file.
@@ -25,6 +14,29 @@
 # ◦stop—Stops the reading process.
 # •M is a matrix of scalars. If M contains units, functions, or embedded matrices, PTC Mathcad cannot write the file.
 # •rows or cols (optional) are either scalars specifying the first row or column of matrix M to write, or two-element vectors specifying the range of rows or columns (inclusive) of matrix M to write. If you omit this argument, WRITEEXCEL writes out every row and column of the matrix to the specified file.
+
+# TODO: list of stuff
+"""
+----------------------------------------------------------------------------------------------
+Next steps/ideas (in no particular order):
+- Clean up code, organize into separate classes/files to be able to call with various input methods, not just the excel file (Supporting subfolder has files created already)
+- Add logging
+- Look into why placement of equations is off
+- Look into adding units to variables within equations, not just overall result units (this needs a lot more thought into it with how to parse the input equation)
+- Create various blank templates to use (with different margins, look into some headers, footers, etc.)
+- Try to 'calculate' top based on previous regions or make it a fixed amount of cells (if we can somehow read the cell height from within the mcdx template file used)
+
+- (Existing File Modifications) Look into basing top off of lowest region in the template file used if it has any regions in it already defined.
+- Look into modifying existing variables/equations in a file instead of just appending new ones at the end (though this may be more of an API thing)
+- Look into copying sheets and formatting programmatically. Say I create a calculation manually. But later, I want to make it a bit more formal to submit, so I want to add a typical header/footer and change the margins all at once.
+    - Additionally, maybe I want to repeat this calculation x amount of times with different inputs, can I at least copy the sheet progammatically to avoid the hassle of setting everything up? And then can use the api to modify the inputs for each sheet copy if possible
+    - Following a similar train of thought, maybe I have a file already set up, can I create a table of contents programmatically with links to text formatted as a header? Maybe an option for text styles to include in this. Or create a table of contents when the program copies sheets as an option for easier navigation
+
+- (API) Look into setting equations as input/output here so that we can modify them later through the Mathcad API if needed. May be easier to use this tool for initial creation and then api stuff for extraction still if set up properly here
+
+- (Unsure) Decide whether to continue with sympy parsing or try to move to something else in the backend like mathml... Biggest concern is handling different formats of input equations, there is a parse latex function in sympy, but unsure about how good it is and some additional formatting is still needed after parsing... Will likely just stick with sympy for now, but may revisit later
+----------------------------------------------------------------------------------------------
+"""
 
 # Import necessary libraries for XML processing, algebraic parsing, etc.
 import zipfile
@@ -42,10 +54,6 @@ import re
 input_file_path = "mcdx/blank.mcdx"  # a blank mathcad file to edit. Needs to exist before script is ran
 output_file_path = "mcdx/TestOutput2.mcdx"  # output file path. Does not need to exist before script is ran
 
-# TODO: organize functions into classes (like a class for reading in data so I can change the source later, a class for parsing xml, a class for writing xml, etc.)
-# TODO: will help to really understand order of operations, try to reorganize the functions so that they are in order of execution (roughly)
-
-# TODO: currently, top is read in from spreadsheet and left is not used. I probably want to just dynamically change top based on some testing. Set left to some fixed number so that they are all aligned. Also need to look into figuring out how to assign a unit to a calculated equation. Currently, a placeholder is used - can I just replace that with a unit item, or is it some custom thing?
 
 state = {"region_id": 0, "top": 128}  # the initial value of 'top'
 
@@ -58,10 +66,58 @@ ws_ns = d_ns
 u_ns = "http://schemas.mathsoft.com/units10"
 p_ns = "http://schemas.mathsoft.com/provenance10"
 
+
 id_s = "{http://www.w3.org/XML/1998/namespace}space"
 r_s = "{http://schemas.mathsoft.com/worksheet50}regions"
 ap_s = "{" + ml_ns + "}apply"
 df_s = "{" + ml_ns + "}define"
+
+
+def add_subscript_to_id(id_element, name):
+    """Helper function for creating id elements. If there is a subscript (checked via regex), adds the necessary XML elements in the Mathcad specific format.
+
+    Args:
+        id_element (_type_): _description_
+        name (_type_): _description_
+    """
+
+    """
+    <ml:define>
+        <ml:id labels="VARIABLE" xml:space="preserve">
+            <Span xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:pw="clr-namespace:Ptc.Wpf;assembly=Ptc.Core">b<pw:Subscript>test2</pw:Subscript>
+            </Span>
+        </ml:id>
+        <ml:real>6</ml:real>
+    </ml:define>
+    """
+
+    sub_match = re.match(r"(.+?)_(?:\{)?(.+?)(?:\})?$", name)
+    if sub_match:
+        base, sub = sub_match.groups()
+
+        # Define namespace mappings for lxml
+        nsmap = {
+            None: "http://schemas.microsoft.com/winfx/2006/xaml/presentation",
+            "pw": "clr-namespace:Ptc.Wpf;assembly=Ptc.Core",
+        }
+
+        # Create <Span> element with namespace map (not xmlns attributes or else it throws an error)
+        span = ET.Element(
+            "{http://schemas.microsoft.com/winfx/2006/xaml/presentation}Span",
+            nsmap=nsmap,
+        )
+        span.text = base
+
+        # Add the <pw:Subscript> element under this namespace
+        pw_ns = "clr-namespace:Ptc.Wpf;assembly=Ptc.Core"
+        pw_sub = ET.Element(f"{{{pw_ns}}}Subscript")
+        pw_sub.text = sub
+        span.append(pw_sub)
+        id_element.append(span)
+    else:
+        id_element.text = name
+    return id_element
 
 
 def create_id(parent, name, labels, preserve="preserve"):
@@ -79,8 +135,9 @@ def create_id(parent, name, labels, preserve="preserve"):
         _type_: _description_
     """
     id_attrs = {"labels": labels, id_s: preserve}
-    id_element = create_element(parent, "{" + ml_ns + "}id", id_attrs, name)
-    return id_element
+    id_element = ET.SubElement(parent, "{" + ml_ns + "}id", id_attrs)
+
+    return add_subscript_to_id(id_element, name)
 
 
 def create_id_with_contextual_label(
@@ -89,6 +146,8 @@ def create_id_with_contextual_label(
     """Function to create an 'id' element in XML with contextual label attribute.
 
     This element is used to label math elements contextually. For instance, a variable with a specific unit.
+
+    ONLY USED FOR UNITS
 
     Args:
         parent (_type_): _description_
@@ -112,6 +171,8 @@ def create_id_no_label(parent, text):
     """Function to create an 'id' element in XML without any label.
 
     This function generates a simple ID element with only the "preserve" attribute.
+
+    NOT USED
 
     Args:
         parent (_type_): _description_
@@ -397,8 +458,8 @@ def create_operation(root, item):
         var_node.set("labels", "VARIABLE")
         var_node.set("{http://www.w3.org/XML/1998/namespace}space", "preserve")
         var_node.set("label-is-contextual", "true")
-        var_node.text = str(var_name)
-        return var_node
+
+        return add_subscript_to_id(var_node, var_name)
 
     def create_real_node(value):
         real_node = ET.Element("{" + ml_ns + "}real")
@@ -479,8 +540,16 @@ def create_operation(root, item):
 
     unitOverride = ET.Element("{" + ml_ns + "}unitOverride")
     # eval.append(unitOverride)
-    placeholder = ET.Element("{" + ml_ns + "}placeholder")
-    unitOverride.append(placeholder)
+    # placeholder = ET.Element("{" + ml_ns + "}placeholder")
+    # unitOverride.append(placeholder)
+    # parent_node.append(unitOverride)
+    #! allows us to set final calculation result units if desired, otherwise placeholder (i.e., no units).
+    if item.get("unit"):
+        # If a unit is provided, create an <ml:id> instead of a placeholder
+        create_id_with_contextual_label(unitOverride, item["unit"], "UNIT")
+    else:
+        placeholder = ET.Element("{" + ml_ns + "}placeholder")
+        unitOverride.append(placeholder)
     parent_node.append(unitOverride)
 
     state["region_id"] += 1
@@ -661,7 +730,7 @@ def append_variables(root, define_variables_data):
     """
     regions_tag = root.find("ws:regions", namespaces=root.nsmap)
     for item in define_variables_data:
-        if not item["var_name"] or not item["value"] or not item["unit"]:
+        if not item["var_name"] or not item["value"]:
             continue  # skip this iteration if any value is empty or None
 
         regions_tag.append(
@@ -691,14 +760,17 @@ def get_max_region_id_from_root(root):
     Returns:
         _type_: _description_
     """
-    max_region_id = max(
-        int(region.get("region-id"))
-        for region in root.findall(".//{http://schemas.mathsoft.com/worksheet50}region")
-    )
-    return max_region_id
-
-
-# Function to write the given data into a zip archive at the specified output path.
+    try:
+        max_region_id = max(
+            int(region.get("region-id"))
+            for region in root.findall(
+                ".//{http://schemas.mathsoft.com/worksheet50}region"
+            )
+        )
+        return max_region_id
+    except ValueError:
+        # value error is thrown if there are no existing regions. In that case, return -1 so that the first region id when it increments is 0 to kick things off
+        return -1
 
 
 def write_data_to_zip(output_file_path, data):
@@ -768,7 +840,7 @@ def parse_excel_input(file_name):
         if not row[1]:
             continue
         data = row[1]
-        # replacing any blank space (TODO: .strip maybe instead?)
+        # replacing any blank space
         data = data.replace(" ", "")
         # storing vertical location of element
         top = float(row[2])
@@ -829,22 +901,39 @@ def parse_excel_input(file_name):
                 else:
                     # Expression-based variable definition
                     try:
+                        unit_match = re.match(r"(.+?)(?:\[(.+)\])?$", rhs)
+                        expr_part = unit_match.group(1).strip()
+                        unit_part = (
+                            unit_match.group(2).strip() if unit_match.group(2) else None
+                        )
+
                         expr = parse_expr(
-                            rhs, evaluate=False
+                            expr_part.strip().replace("=", ""), evaluate=False
                         )  #! NOTE: this code uses sympy parser as the background format. May want to stick with this moving forward, but need to look into making sure that it can handle unicode characters when written into xml somehow... Can we export sympy expressions to latex somehow to get the special characters? and then unicode from latex?
-                        variable_data = {"var_name": var, "expr": expr, "top": top}
+                        variable_data = {
+                            "var_name": var,
+                            "expr": expr,
+                            "top": top,
+                            "unit": unit_part,
+                        }
                         operations_data.append(variable_data)
                     except Exception as e:
+                        #! known exception - right now this is set up to parse python formatting, so no curly brackets for subscripts, ** instead of ^ for exponents, etc. Will eventually split things up to try to allow for different input formats like latex
                         print(f"Error parsing expression for {var}: {rhs} -> {e}")
                         ###############
-        else:  # standalone expression  # TODO: figure out how to add units to the operation
+        else:  # standalone expression
             try:
+                unit_match = re.match(r"(.+?)(?:\[(.+)\])?$", data)
+                expr_part = unit_match.group(1).strip()
+                unit_part = unit_match.group(2).strip() if unit_match.group(2) else None
+
                 op_data = {
                     "expr": parse_expr(
-                        data.strip().replace("=", ""),
+                        expr_part.strip().replace("=", ""),
                         evaluate=False,
                     ),
                     "top": top,
+                    "unit": unit_part,
                 }
                 operations_data.append(op_data)
             except Exception as e:
@@ -901,7 +990,7 @@ def read_and_modify_zip(
                 if filename == "mathcad/result.xml":  # skipping result.xml file
                     continue
                 elif filename == "mathcad/worksheet.xml":  # the file to write to
-                    # TODO: organize this printed output better/set up proper logging that can be toggled on/off whether debugging or not (if debugging, log to console, if not, log to file with timestamps, etc.)
+
                     print(
                         input_file_path,
                         define_variables_data,
@@ -967,7 +1056,8 @@ def main():
 
 
 if __name__ == "__main__":
-    # include some logic for debugging when this is the main file. When in production, this will be imported as a module and main will be called directly.
+    # include some logic for debugging when this is the main file. When in production, this will be imported as a module and main will be called directly/set up proper logging that can be toggled on/off whether debugging or not (if debugging, log to console, if not, log to file with timestamps, etc.)
+
     main()
 
 # Note. Exponents are **. Not ^.

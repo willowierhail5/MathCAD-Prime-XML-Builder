@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?><regions xmlns="http://schemas.ptc.com/integration10">
-    <region region-id="13" ioTagType="Input">
-        <inputAliases>
-            <alias>&#945;</alias>
-        </inputAliases>
-    </region>
-</regions>

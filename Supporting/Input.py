@@ -1,10 +1,11 @@
 def main():
     print("Hello world!")
 
-    from sympy import pprint
+    from sympy import pprint, symbols
 
     from sympy.parsing.latex import parse_latex
     import unicodeit
+    import re
 
     # to avoid converting math expressions, only want to convert letters (expand to other things)
     [
@@ -15,9 +16,23 @@ def main():
 
     # note that if I move forward with using sympy to keep track of expressions, I need to keep two versions of the equation, one that has not had unicode characters converted since sympy can't parse those, and one that has had them converted for display purposes
     # expr = parse_latex(unicodeit.replace(r"\frac {1 + \sqrt {\alpha}} {b}"))
-    expr = parse_latex(r"\frac {1 + \sqrt {\alpha}} {b}")
+    latex = r"I_{e} = \left(\frac{M_{cr}}{M_{a}}\right)^{3} I_{g} + \left[1 - \left(\frac{M_{cr}}{M_{a}}\right)^{3}\right] I_{cr}"
+    latex_clean = re.sub(r"([A-Za-z])_\{([A-Za-z0-9]+)\}", r"\1_\2", latex)
+    expr = parse_latex(latex)
     pprint(expr)
     print(rf"{expr}")
+
+    replacements = {}
+    for s in expr.free_symbols:
+        if "_" in s.name:
+            # ? funky parsing with multi-character subscripts. It will recognize that it is one arg overall, but will insert a * between the subscript characters so just stripping that for now. Not sure if anything else is needed to clean up the parsing
+            # new_name = s.name.replace("{", "").replace("*", "").replace("}", "")
+            new_name = s.name.replace("*", "")
+            replacements[s] = symbols(new_name)
+
+    expr = expr.subs(replacements)
+    pprint(expr)
+    print(expr.args)
 
     # maybe try except to see if can parse with traditional parser or if latex parser is needed
     # from sympy.parsing.sympy_parser import parse_expr
