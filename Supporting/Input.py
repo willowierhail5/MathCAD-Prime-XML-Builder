@@ -42,13 +42,22 @@ def LatexInput(
         import subprocess
         import os
 
-        subprocess.run(
-            [
-                # r"C:\Program Files\PTC\Mathcad Prime 11.0.1.0\MathcadPrime.exe",
-                r"C:\Program Files\PTC\Mathcad Prime 9.0.0.0\MathcadPrime.exe",
-                os.path.abspath(output_file_path),
-            ]
-        )
+        try:
+            subprocess.run(
+                [
+                    # r"C:\Program Files\PTC\Mathcad Prime 11.0.1.0\MathcadPrime.exe",
+                    r"C:\Program Files\PTC\Mathcad Prime 9.0.0.0\MathcadPrime.exe",
+                    os.path.abspath(output_file_path),
+                ]
+            )
+        except FileNotFoundError:
+            subprocess.run(
+                [
+                    r"C:\Program Files\PTC\Mathcad Prime 11.0.1.0\MathcadPrime.exe",
+                    # r"C:\Program Files\PTC\Mathcad Prime 9.0.0.0\MathcadPrime.exe",
+                    os.path.abspath(output_file_path),
+                ]
+            )
 
     return output_file_path
 
@@ -84,6 +93,9 @@ def parse_latex_input(latex_string):
         if "=" not in line:
             continue
 
+        # line = re.sub(r"f_([a-zA-Z])'", r"f'_{\1}", line)
+        line = re.sub(r"([A-Za-zΑ-Ωα-ωρσ]+)_([A-Za-z0-9])'", r"\1'_\2", line)
+
         lhs, rhs = map(str.strip, line.split("=", 1))
 
         # Try parsing both sides with Sympy
@@ -111,6 +123,9 @@ def parse_latex_input(latex_string):
                 replacements[s] = symbols(new_name)
 
         expr = expr.subs(replacements)
+
+        if "_" in var_name:
+            var_name = var_name.replace("*", "")
 
         operations_data.append(
             {"var_name": var_name, "expr": expr, "unit": None, "top": top}
@@ -157,13 +172,22 @@ def ExcelInput(
         import subprocess
         import os
 
-        subprocess.run(
-            [
-                # r"C:\Program Files\PTC\Mathcad Prime 11.0.1.0\MathcadPrime.exe",
-                r"C:\Program Files\PTC\Mathcad Prime 9.0.0.0\MathcadPrime.exe",
-                os.path.abspath(output_file_path),
-            ]
-        )
+        try:
+            subprocess.run(
+                [
+                    # r"C:\Program Files\PTC\Mathcad Prime 11.0.1.0\MathcadPrime.exe",
+                    r"C:\Program Files\PTC\Mathcad Prime 9.0.0.0\MathcadPrime.exe",
+                    os.path.abspath(output_file_path),
+                ]
+            )
+        except FileNotFoundError:
+            subprocess.run(
+                [
+                    r"C:\Program Files\PTC\Mathcad Prime 11.0.1.0\MathcadPrime.exe",
+                    # r"C:\Program Files\PTC\Mathcad Prime 9.0.0.0\MathcadPrime.exe",
+                    os.path.abspath(output_file_path),
+                ]
+            )
     return output_file_path
 
 

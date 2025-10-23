@@ -2,7 +2,7 @@ import zipfile
 import io
 from lxml import etree as ET
 
-from sympy import Add, Mul, Pow, Integer, Symbol
+from sympy import Add, Mul, Pow, Integer, Symbol, Float
 
 import re
 
@@ -270,6 +270,11 @@ def add_subscript_to_id(id_element, name):
     </ml:define>
     """
 
+    # checking for a prime after the subscript and reorganizing string so it goes before
+    if "_" in name and "'" == name[-1]:
+        name_split = name.split("_")
+        name = name_split[0] + "'_" + name_split[1][:-1]
+
     sub_match = re.match(r"(.+?)_(?:\{)?(.+?)(?:\})?$", name)
     if sub_match:
         base, sub = sub_match.groups()
@@ -502,7 +507,7 @@ def create_operation(root, item):
             return handle_power(expr)
         elif isinstance(expr, Symbol):
             return create_var_node(expr.name)
-        elif isinstance(expr, Integer):
+        elif isinstance(expr, Integer) or isinstance(expr, Float):
             return create_real_node(expr)
 
     def handle_sequence(terms):
