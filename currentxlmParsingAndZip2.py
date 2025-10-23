@@ -19,7 +19,7 @@
 """
 ----------------------------------------------------------------------------------------------
 Next steps/ideas (in no particular order):
-- Clean up code, organize into separate classes/files to be able to call with various input methods, not just the excel file (Supporting subfolder has files created already)
+- Create package from code to be imported and used in other places
 - Add logging
 - Look into why placement of equations is off
 - Look into adding units to variables within equations, not just overall result units (this needs a lot more thought into it with how to parse the input equation)
