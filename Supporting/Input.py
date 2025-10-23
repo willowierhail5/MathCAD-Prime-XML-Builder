@@ -44,7 +44,8 @@ def LatexInput(
 
         subprocess.run(
             [
-                r"C:\Program Files\PTC\Mathcad Prime 11.0.1.0\MathcadPrime.exe",
+                # r"C:\Program Files\PTC\Mathcad Prime 11.0.1.0\MathcadPrime.exe",
+                r"C:\Program Files\PTC\Mathcad Prime 9.0.0.0\MathcadPrime.exe",
                 os.path.abspath(output_file_path),
             ]
         )
@@ -158,7 +159,8 @@ def ExcelInput(
 
         subprocess.run(
             [
-                r"C:\Program Files\PTC\Mathcad Prime 11.0.1.0\MathcadPrime.exe",
+                # r"C:\Program Files\PTC\Mathcad Prime 11.0.1.0\MathcadPrime.exe",
+                r"C:\Program Files\PTC\Mathcad Prime 9.0.0.0\MathcadPrime.exe",
                 os.path.abspath(output_file_path),
             ]
         )
