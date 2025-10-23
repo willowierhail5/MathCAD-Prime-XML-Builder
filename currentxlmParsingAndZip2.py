@@ -15,11 +15,13 @@
 # •M is a matrix of scalars. If M contains units, functions, or embedded matrices, PTC Mathcad cannot write the file.
 # •rows or cols (optional) are either scalars specifying the first row or column of matrix M to write, or two-element vectors specifying the range of rows or columns (inclusive) of matrix M to write. If you omit this argument, WRITEEXCEL writes out every row and column of the matrix to the specified file.
 
-# TODO: list of stuff
+# TODO: list of stuff, move this to a readme or somewhere more formal
 """
 ----------------------------------------------------------------------------------------------
 Next steps/ideas (in no particular order):
 - Create package from code to be imported and used in other places
+- Parse and work with symbols (symbols for variables, think delta, or even the ' in f'c, and symbols for math, like sqrt doesn't seem to work - actually might just be the f'c thing)
+    - convert inequalities somehow
 - Add logging
 - Look into why placement of equations is off
 - Look into adding units to variables within equations, not just overall result units (this needs a lot more thought into it with how to parse the input equation)

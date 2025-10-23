@@ -371,6 +371,15 @@ def main():
     # note that if I move forward with using sympy to keep track of expressions, I need to keep two versions of the equation, one that has not had unicode characters converted since sympy can't parse those, and one that has had them converted for display purposes
     # expr = parse_latex(unicodeit.replace(r"\frac {1 + \sqrt {\alpha}} {b}"))
     latex = r"I_{e} = \left(\frac{M_{cr}}{M_{a}}\right)^{3} I_{g} + \left[1 - \left(\frac{M_{cr}}{M_{a}}\right)^{3}\right] I_{cr}"
+
+    """
+    latex = r"P_o = 0.85 f_c' (A_g - A_{st}) + f_y A_{st}" -> Eq(P_{o}, A_{s*t}*f_{y} + 0.85*f_{c'}(A_{g} - A_{s*t}))
+
+    latex = r"P_o = 0.85 f'_c (A_g - A_{st}) + f_y A_{st}"  -> Eq(P_{o}, A_{s*t}*f_{y} + 0.85*f_{c}'(A_{g} - A_{s*t}))
+
+    f'c is read with the first method, may want to use regex to swap the order so the ' is before the underscore if an underscore is present. Then test if the mathcad code works with that
+
+    """
     latex_clean = re.sub(r"([A-Za-z])_\{([A-Za-z0-9]+)\}", r"\1_\2", latex)
     expr = parse_latex(latex)
     pprint(expr)
