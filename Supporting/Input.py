@@ -3,7 +3,7 @@ from sympy.parsing.latex import parse_latex
 from sympy import Symbol, symbols
 import openpyxl
 import re
-import Supporting.XML
+import Supporting.XML as xml
 
 
 def LatexInput(
@@ -29,7 +29,7 @@ def LatexInput(
         write_excel_data,
     ) = parse_latex_input(latex_str)
 
-    Supporting.XML.read_and_modify_zip(
+    xml.read_and_modify_zip(
         define_variables_data=define_variables_data,
         read_excel_data=read_excel_data,
         write_excel_data=write_excel_data,
@@ -159,7 +159,7 @@ def ExcelInput(
         write_excel_data,
     ) = parse_excel_input(filePath)
 
-    Supporting.XML.read_and_modify_zip(
+    xml.read_and_modify_zip(
         define_variables_data=define_variables_data,
         read_excel_data=read_excel_data,
         write_excel_data=write_excel_data,

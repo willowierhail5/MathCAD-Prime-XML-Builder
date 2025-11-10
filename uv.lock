@@ -21,12 +21,33 @@ wheels = [
 ]
 
 [[package]]
+name = "lark"
+version = "1.3.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/1d/37/a13baf0135f348af608c667633cbe5d13aa2c5c15a56ae9ad3e6cba45ae3/lark-1.3.0.tar.gz", hash = "sha256:9a3839d0ca5e1faf7cfa3460e420e859b66bcbde05b634e73c369c8244c5fa48", size = 259551, upload-time = "2025-09-22T13:45:05.072Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a8/3e/1c6b43277de64fc3c0333b0e72ab7b52ddaaea205210d60d9b9f83c3d0c7/lark-1.3.0-py3-none-any.whl", hash = "sha256:80661f261fb2584a9828a097a2432efd575af27d20be0fd35d17f0fe37253831", size = 113002, upload-time = "2025-09-22T13:45:03.747Z" },
+]
+
+[[package]]
 name = "latex2mathml"
 version = "3.78.1"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/1a/26/57b1034c08922d0aefea79430a5e0006ffaee4f0ec59d566613f667ab2f7/latex2mathml-3.78.1.tar.gz", hash = "sha256:f941db80bf41db33f31df87b304e8b588f8166b813b0257c11c98f7a9d0aac71", size = 74030, upload-time = "2025-08-29T23:34:23.178Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/3e/76/d661ea2e529c3d464f9efd73f9ac31626b45279eb4306e684054ea20e3d4/latex2mathml-3.78.1-py3-none-any.whl", hash = "sha256:f089b6d75e85b937f99693c93e8c16c0804008672c3dd2a3d25affd36f238100", size = 73892, upload-time = "2025-08-29T23:34:21.98Z" },
+]
+
+[[package]]
+name = "latex2sympy2"
+version = "1.5.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "antlr4-python3-runtime" },
+    { name = "sympy" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ff/ac/d6f469cbfb4b6cd887f9bb1d558c044219b0550aa0ba8928bae05690e971/latex2sympy2-1.5.4-py3-none-any.whl", hash = "sha256:934aa5e87130d0d6f13f505b209f4a5eca9b5264685503fe9176e94c8f378640", size = 73338, upload-time = "2021-05-11T13:45:39.095Z" },
 ]
 
 [[package]]
@@ -115,7 +136,9 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "antlr4-python3-runtime" },
+    { name = "lark" },
     { name = "latex2mathml" },
+    { name = "latex2sympy2" },
     { name = "lxml" },
     { name = "openpyxl" },
     { name = "sympy" },
@@ -125,7 +148,9 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "antlr4-python3-runtime", specifier = "==4.11" },
+    { name = "lark", specifier = ">=1.3.0" },
     { name = "latex2mathml", specifier = ">=3.78.1" },
+    { name = "latex2sympy2", specifier = ">=1.5.4" },
     { name = "lxml", specifier = ">=6.0.2" },
     { name = "openpyxl", specifier = ">=3.1.5" },
     { name = "sympy", specifier = ">=1.14.0" },

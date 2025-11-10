@@ -1,0 +1,119 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+    <mrow>
+        <msub>
+            <mi>v</mi>
+            <mrow>
+                <mi>c</mi>
+            </mrow>
+        </msub>
+        <mo>&#x0003D;</mo>
+        <mrow>
+            <mo stretchy="true" fence="true" form="prefix">&#x00028;</mo>
+            <mn>1.5</mn>
+            <mo>&#x0002B;</mo>
+            <mfrac>
+                <mrow>
+                    <msub>
+                        <mi>&#x003B1;</mi>
+                        <mrow>
+                            <mi>s</mi>
+                        </mrow>
+                    </msub>
+                    <mi>d</mi>
+                </mrow>
+                <mrow>
+                    <msub>
+                        <mi>b</mi>
+                        <mrow>
+                            <mi>o</mi>
+                        </mrow>
+                    </msub>
+                </mrow>
+            </mfrac>
+            <mo stretchy="true" fence="true" form="postfix">&#x00029;</mo>
+        </mrow>
+        <mi>&#x003BB;</mi>
+        <msqrt>
+            <mrow>
+                <msubsup>
+                    <mi>f</mi>
+                    <mrow>
+                        <mi>c</mi>
+                    </mrow>
+                    <mi>&#x02032;</mi>
+                </msubsup>
+            </mrow>
+        </msqrt>
+        <mo>&#x0002B;</mo>
+        <mn>0.3</mn>
+        <msub>
+            <mi>f</mi>
+            <mrow>
+                <mi>p</mi>
+                <mi>c</mi>
+            </mrow>
+        </msub>
+        <mo>&#x0002B;</mo>
+        <mfrac>
+            <mrow>
+                <msub>
+                    <mi>V</mi>
+                    <mrow>
+                        <mi>p</mi>
+                    </mrow>
+                </msub>
+            </mrow>
+            <mrow>
+                <msub>
+                    <mi>b</mi>
+                    <mrow>
+                        <mi>o</mi>
+                    </mrow>
+                </msub>
+                <mi>d</mi>
+            </mrow>
+        </mfrac>
+    </mrow>
+</math>
+
+
+
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+    <mrow>
+        <msub>
+            <mi>T</mi>
+            <mi>n</mi>
+        </msub>
+        <mo>&#x0003D;</mo>
+        <mfrac>
+            <mrow>
+                <mn>2</mn>
+                <msubsup>
+                    <mi>A</mi>
+                    <mi>o</mi>
+                    <mn>3</mn>
+                </msubsup>
+                <msub>
+                    <mi>A</mi>
+                    <mi>i</mi>
+                </msub>
+                <msub>
+                    <mi>f</mi>
+                    <mrow>
+                        <mi>y</mi>
+                        <mi>i</mi>
+                    </mrow>
+                </msub>
+            </mrow>
+            <mrow>
+                <mi>s</mi>
+            </mrow>
+        </mfrac>
+        <mi>cot</mi>
+        <mi>&#x003B8;</mi>
+    </mrow>
+</math>
+
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>a</mi><mi>•</mi><mi>b</mi><mi>x</mi><mn>4</mn></mrow></math>
+
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mi>I</mi><mrow><mi>e</mi></mrow></msub><mo>&#x0003D;</mo><msup><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mfrac><mrow><msub><mi>M</mi><mrow><mi>c</mi><mi>r</mi></mrow></msub></mrow><mrow><msub><mi>M</mi><mrow><mi>a</mi></mrow></msub></mrow></mfrac><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mrow><mn>3</mn></mrow></msup><msub><mi>I</mi><mrow><mi>g</mi></mrow></msub><mo>&#x0002B;</mo><mrow><mo stretchy="true" fence="true" form="prefix">[</mo><mn>1</mn><mo>&#x02212;</mo><msup><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mfrac><mrow><msub><mi>M</mi><mrow><mi>c</mi><mi>r</mi></mrow></msub></mrow><mrow><msub><mi>M</mi><mrow><mi>a</mi></mrow></msub></mrow></mfrac><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mrow><mn>3</mn></mrow></msup><mo stretchy="true" fence="true" form="postfix">]</mo></mrow><msub><mi>I</mi><mrow><mi>c</mi><mi>r</mi></mrow></msub></mrow></math>

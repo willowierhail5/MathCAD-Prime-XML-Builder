@@ -1,0 +1,145 @@
+<worksheet msg-id="NoMessage"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ve="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+    xmlns:ws="http://schemas.mathsoft.com/worksheet50"
+    xmlns:ml="http://schemas.mathsoft.com/math50"
+    xmlns:u="http://schemas.mathsoft.com/units10"
+    xmlns:p="http://schemas.mathsoft.com/provenance10"
+    xmlns="http://schemas.mathsoft.com/worksheet50">
+    <regions>
+        <region region-id="0" actualWidth="282.07266697963075" actualHeight="51.582400000000007" top="134.40000000000003" left="115.20000000000002">
+            <math resultRef="0">
+                <ml:define>
+                    <ml:id labels="VARIABLE" xml:space="preserve">
+                        <Span xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                            xmlns:pw="clr-namespace:Ptc.Wpf;assembly=Ptc.Core">v<pw:Subscript>c</pw:Subscript>
+                        </Span>
+                    </ml:id>
+                    <ml:apply>
+                        <ml:plus />
+                        <ml:apply>
+                            <ml:plus />
+                            <ml:apply>
+                                <ml:mult />
+                                <ml:apply>
+                                    <ml:scale />
+                                    <ml:parens>
+                                        <ml:apply>
+                                            <ml:plus />
+                                            <ml:real>1.5</ml:real>
+                                            <ml:apply>
+                                                <ml:div />
+                                                <ml:apply>
+                                                    <ml:mult />
+                                                    <ml:id xml:space="preserve">
+                                                        <Span xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                                            xmlns:pw="clr-namespace:Ptc.Wpf;assembly=Ptc.Core">α                                                            <pw:Subscript>s</pw:Subscript>
+                                                        </Span>
+                                                    </ml:id>
+                                                    <ml:id xml:space="preserve">d</ml:id>
+                                                </ml:apply>
+                                                <ml:id xml:space="preserve">
+                                                    <Span xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                                        xmlns:pw="clr-namespace:Ptc.Wpf;assembly=Ptc.Core">b<pw:Subscript>o</pw:Subscript>
+                                                    </Span>
+                                                </ml:id>
+                                            </ml:apply>
+                                        </ml:apply>
+                                    </ml:parens>
+                                    <ml:id xml:space="preserve">λ</ml:id>
+                                </ml:apply>
+                                <ml:apply>
+                                    <ml:nthRoot />
+                                    <ml:placeholder />
+                                    <ml:id xml:space="preserve">
+                                        <Span xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                            xmlns:pw="clr-namespace:Ptc.Wpf;assembly=Ptc.Core">f'<pw:Subscript>c</pw:Subscript>
+                                        </Span>
+                                    </ml:id>
+                                </ml:apply>
+                            </ml:apply>
+                            <ml:apply>
+                                <ml:scale />
+                                <ml:real>0.3</ml:real>
+                                <ml:id xml:space="preserve">
+                                    <Span xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                        xmlns:pw="clr-namespace:Ptc.Wpf;assembly=Ptc.Core">f<pw:Subscript>pc</pw:Subscript>
+                                    </Span>
+                                </ml:id>
+                            </ml:apply>
+                        </ml:apply>
+                        <ml:apply>
+                            <ml:div />
+                            <ml:id xml:space="preserve">
+                                <Span xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                    xmlns:pw="clr-namespace:Ptc.Wpf;assembly=Ptc.Core">v<pw:Subscript>p</pw:Subscript>
+                                </Span>
+                            </ml:id>
+                            <ml:apply>
+                                <ml:mult />
+                                <ml:id xml:space="preserve">
+                                    <Span xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                        xmlns:pw="clr-namespace:Ptc.Wpf;assembly=Ptc.Core">b<pw:Subscript>o</pw:Subscript>
+                                    </Span>
+                                </ml:id>
+                                <ml:id xml:space="preserve">d</ml:id>
+                            </ml:apply>
+                        </ml:apply>
+                    </ml:apply>
+                </ml:define>
+            </math>
+        </region>
+        <region region-id="1" actualWidth="185.24666666666667" actualHeight="51.543200000000006" top="249.60000000000002" left="115.20000000000002">
+            <math resultRef="1">
+                <ml:define>
+                    <ml:id labels="VARIABLE" xml:space="preserve">
+                        <Span xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                            xmlns:pw="clr-namespace:Ptc.Wpf;assembly=Ptc.Core">T<pw:Subscript>n</pw:Subscript>
+                        </Span>
+                    </ml:id>
+                    <ml:apply>
+                        <ml:scale />
+                        <ml:apply>
+                            <ml:div />
+                            <ml:apply>
+                                <ml:mult />
+                                <ml:apply>
+                                    <ml:mult />
+                                    <ml:apply>
+                                        <ml:mult />
+                                        <ml:real>2</ml:real>
+                                        <ml:apply>
+                                            <ml:pow />
+                                            <ml:id xml:space="preserve">
+                                                <Span xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                                    xmlns:pw="clr-namespace:Ptc.Wpf;assembly=Ptc.Core">A<pw:Subscript>o</pw:Subscript>
+                                                </Span>
+                                            </ml:id>
+                                            <ml:real>3</ml:real>
+                                        </ml:apply>
+                                    </ml:apply>
+                                    <ml:id xml:space="preserve">
+                                        <Span xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                            xmlns:pw="clr-namespace:Ptc.Wpf;assembly=Ptc.Core">A<pw:Subscript>i</pw:Subscript>
+                                        </Span>
+                                    </ml:id>
+                                </ml:apply>
+                                <ml:id xml:space="preserve">
+                                    <Span xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                        xmlns:pw="clr-namespace:Ptc.Wpf;assembly=Ptc.Core">f<pw:Subscript>yi</pw:Subscript>
+                                    </Span>
+                                </ml:id>
+                            </ml:apply>
+                            <ml:id xml:space="preserve">s</ml:id>
+                        </ml:apply>
+                        <ml:apply>
+                            <ml:id xml:space="preserve">cot</ml:id>
+                            <ml:id xml:space="preserve">θ</ml:id>
+                        </ml:apply>
+                    </ml:apply>
+                </ml:define>
+            </math>
+        </region>
+    </regions>
+</worksheet>
